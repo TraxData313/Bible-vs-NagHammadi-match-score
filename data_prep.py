@@ -42,8 +42,8 @@ def remove_line_markers(line):
                 pass #word is a line marker like (23) - skip it
             else:
                 line_out.append(word)
-        elif (len(word) > 1) and (word[0]=='(') and (word[-1]==')') and (word[1:-1].isnumeric()):
-            pass #word is a line marker like (23) - skip it
+        elif (len(word) > 1) and (word[0]=='(') and (word[-1]==')') and ((word[1:-1].isnumeric()) or (word[1:-2].isnumeric())):
+            pass #word is a line marker like (23) or (252a) - skip it
         elif word.isnumeric():
             pass #remove numbers
         else:
@@ -66,7 +66,14 @@ def split_by_sentence(text):
             lines_new.append(line)
     return lines_new
 
-def parse_text(fileName, parse=True, min_chars_per_line=5):
+def remove_numbers(text):
+    new_line = []
+    for word in text.split(' '):
+        if not word.isnumeric():
+           new_line.append(word)
+    return ' '.join(new_line)
+
+def parse_text(fileName, parse=True, min_chars_per_line=3):
     """Parse a book into a list of sentances, separated by a dot
     """
     txt_lines_in = open(fileName).readlines()
@@ -80,7 +87,9 @@ def parse_text(fileName, parse=True, min_chars_per_line=5):
                 line = remove_new_line_symbol(line)
                 line = parse_sed_words_endings(line)
                 line = separate_punctuation(line)
-                txt_out.append(line)
+                line = remove_numbers(line)
+                if len(line) >= min_chars_per_line:
+                    txt_out.append(line)
         txt_out = ' '.join(txt_out)
         txt_out = split_by_sentence(txt_out)
     else:
