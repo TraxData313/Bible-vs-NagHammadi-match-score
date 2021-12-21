@@ -21,18 +21,31 @@ def remove_brackets(line):
     line = line.replace(")", "")
     line = line.replace("[", "")
     line = line.replace("]", "")
+    line = line.replace("<", "")
+    line = line.replace(">", "")
+    line = line.replace("{", "")
+    line = line.replace("}", "")
+    line = line.replace("...", "")
+    line = line.replace("'", "")
+    line = line.replace('"', "")
+    line = line.replace("-", "")
+    line = line.replace("line unrecoverable", "")
+    line = line.replace("lines unrecoverable", "")
     return line
 
-def remove_numb_semicol_numb(line):
+def remove_line_markers(line):
     line_out = []
     for word in line.split(' '):
-        if ':' in word:
+        if (':' in word) and (len(word) > 1):
             words = word.split(':')
-            if len(words) > 1:
-                if not (words[0].isnumeric() and words[1].isnumeric()):
-                    line_out.append(word)
+            if (words[0].isnumeric()) and (words[1].isnumeric()):
+                pass #word is a line marker like (23) - skip it
             else:
                 line_out.append(word)
+        elif (len(word) > 1) and (word[0]=='(') and (word[-1]==')') and (word[1:-1].isnumeric()):
+            pass #word is a line marker like (23) - skip it
+        elif word.isnumeric():
+            pass #remove numbers
         else:
             line_out.append(word)
     return ' '.join(line_out)
@@ -62,10 +75,10 @@ def parse_text(fileName, parse=True, min_chars_per_line=5):
         for line in txt_lines_in:
             if len(line) >= min_chars_per_line:
                 line = line.lower()
+                line = remove_line_markers(line)
                 line = remove_brackets(line)
                 line = remove_new_line_symbol(line)
                 line = parse_sed_words_endings(line)
-                line = remove_numb_semicol_numb(line)
                 line = separate_punctuation(line)
                 txt_out.append(line)
         txt_out = ' '.join(txt_out)
