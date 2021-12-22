@@ -8,7 +8,7 @@ Is Nag Hammadi library part of the Bible? Use NLP techniques to get match score 
 - **[Gnostic](https://en.wikipedia.org/wiki/Gnostic_texts)**: Other texts were rejected as faked/heresy and were rejected. A lot of those texts were destroyed. They are also known as Gnostic texts
 - **[Nag Hammadi](https://en.wikipedia.org/wiki/Nag_Hammadi_library)**: In the 1945 a collection of early Christian and Gnostic texts were discovered near the Upper Egyptian town of Nag Hammadi
 - **Zero hypothesis (H0)**: Nag Hammadi/Gnostic texts and Bible texts are written by the same authors
-- **Goal**: use modern NLP methods to try and prove that H0 is wrong
+- **Goal**: use modern NLP techniques to try and prove that H0 is wrong
 
 <br>
 
