@@ -2,7 +2,7 @@
 Is Nag Hammadi library part of the Bible? Use NLP techniques to get match score between the texts and try to answer that controversial question.
 
 ## The dataset:
-- The raw texts are in data: the Bible (King James transl), Nag Hammadi librarie, Control texts that have nothing to do with Christianity
+- The raw texts are in data: the Bible (King James transl), Nag Hammadi library, Control texts that have nothing to do with Christianity
 - data_prep.py module contains the functions needed to parse and return the dataframe
 ```python
 >>> import data_prep as dp
