@@ -13,8 +13,11 @@ Is Nag Hammadi library part of the Bible? Use NLP techniques to get match score 
 <br>
 
 ## The dataset:
-- **The raw texts are in data**: the Bible (King James transl), Nag Hammadi library, Control texts that have nothing to do with Christianity
-- **data_prep.py** module contains the functions needed to parse and return the dataframe
+- **The raw texts** are in [data](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/tree/main/data): 
+- - [the Bible](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/tree/main/data/Bible%20-%20King%20James) (King James transl) 
+- - [Nag Hammadi library](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/tree/main/data/Nag%20Hammadi)
+- - [Control texts](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/tree/main/data/Control%20texts) that have nothing to do with Christianity
+- **[data_prep.py](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/blob/main/data_prep.py)** module contains the functions needed to parse and return the dataframe
 ```python
 >>> import data_prep as dp
 >>> df = dp.return_dataset()
@@ -28,4 +31,4 @@ Is Nag Hammadi library part of the Bible? Use NLP techniques to get match score 
 >>> list(df.columns)
 ['sentence', 'NUM', 'LIBRARY', 'AUTHOR', 'TEXT_NAME', 'TRANSLATION', 'char_count', 'words_count']
 ```
-- **001_dataset_preview.ipynb** contains usage example of data_prep functions return_dataset() and print_dataset_stats() functions
+- **[001_dataset_preview.ipynb](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/blob/main/001_dataset_preview.ipynb)** contains usage example of data_prep functions return_dataset() and print_dataset_stats() functions
