@@ -21,14 +21,9 @@ Is Nag Hammadi library part of the Bible? Use NLP techniques to get match score 
 ```python
 >>> import data_prep as dp
 >>> df = dp.return_dataset()
->>> df.sample(5)
-                                                 sentence  NUM LIBRARY  ... TRANSLATION char_count words_count
-28399  if they say to you , it is in the sea , then t...  010      NH  ...    Thomas O         70          18
-22243    the woman answered and said , i have no husband  042      NT  ...  King James         47          10
-20788  and he went out from thence , and came into hi...  040      NT  ...  King James         90          19
-19486  hold thy peace at the presence of the lord god...  035      OT  ...  King James        145          32
-16615  and thou , even thyself , shalt discontinue fr...  023      OT  ...  King James        231          47
 >>> list(df.columns)
-['sentence', 'NUM', 'LIBRARY', 'AUTHOR', 'TEXT_NAME', 'TRANSLATION', 'char_count', 'words_count']
+#OUTPUT: ['sentence', 'NUM', 'LIBRARY', 'AUTHOR', 'TEXT_NAME', 'TRANSLATION', 'char_count', 'words_count']
+>>> df.sample(1).sentence
+#OUTPUT: 17050    now the lord hath brought it , and done accord..
 ```
 - **[001_dataset_preview.ipynb](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/blob/main/001_dataset_preview.ipynb)** contains usage example of data_prep functions return_dataset() and print_dataset_stats() functions
