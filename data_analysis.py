@@ -47,7 +47,7 @@ def freq_perm_test(parsed_book_1, parsed_book_2, n_tests=10, perms_per_test=100,
     Mean perm freq diff: 0.00016977974260111298
     Zero hypothesis prob: 0.0 (0 out of 1000 tests had bigger freq diffs)
     """
-    words_dict = dp.get_words_dict([parsed_book_1, parsed_book_2])
+    words_dict = get_words_dict([parsed_book_1, parsed_book_2])
     least_len = min(len(parsed_book_1), len(parsed_book_2))
     if sample_len:
         if sample_len < least_len:
@@ -84,6 +84,16 @@ def freq_perm_test(parsed_book_1, parsed_book_2, n_tests=10, perms_per_test=100,
         print(f'Mean perm freq diff: {np.mean(freq_diff_mean_perms_list)}')
         print(f'Zero hypothesis prob: {zero_hypothesis_prob} ({freq_bigger} out of {perms_per_test*n_tests} tests had bigger freq diffs)')
     return np.mean(freq_diff_mean_reals_list)
+
+def get_words_dict(list_of_lines):
+    word_dict = {}
+    index = 0
+    for line in list_of_lines:
+        for word in line.split(' '):
+            if word not in list(word_dict.keys()):
+                word_dict[word] = index
+                index += 1
+    return word_dict
 
 
 if __name__ == '__main__':

@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import re
+import os
 
 
 
@@ -31,6 +32,11 @@ def remove_brackets(line):
     line = line.replace("'", "")
     line = line.replace('"', "")
     line = line.replace("-", "")
+    line = line.replace("_", "")
+    line = line.replace("â", "a")
+    line = line.replace("ã", "a")
+    line = line.replace("ž", "z")
+    line = line.replace("ª", "a")
     line = line.replace("line unrecoverable", "")
     line = line.replace("lines unrecoverable", "")
     return line
@@ -74,19 +80,7 @@ def remove_numbers(text):
         if not word.isnumeric():
            new_line.append(word)
     return ' '.join(new_line)
-###############################################
-# END SUB FUNCTIONS
-###############################################
 
-
-
-
-
-
-
-###############################################
-# MAIN FUNCTONS
-###############################################
 def parse_text(fileName, parse=True, min_chars_per_line=3):
     """Parse a book into a list of sentances, separated by a dot
     """
@@ -109,17 +103,91 @@ def parse_text(fileName, parse=True, min_chars_per_line=3):
     else:
         txt_out = txt_lines_in
     return txt_out
+###############################################
+# END SUB FUNCTIONS
+###############################################
 
-def get_words_dict(list_of_lines):
-    word_dict = {}
-    index = 0
-    for _list in list_of_lines:
-        for line in _list:
-            for word in line.split(' '):
-                if word not in list(word_dict.keys()):
-                    word_dict[word] = index
-                    index += 1
-    return word_dict
+
+
+
+
+
+
+###############################################
+# MAIN FUNCTONS
+###############################################
+def print_dataset_stats(df, who='LIBRARY', what='char_count'):
+    """Prints WHAT stats by WHO, for example word_cout stats per AUTHOR
+    df: df as returned from return_dataset()
+    who: LIBRARY, AUTHOR, TEXT_NAME, TRANSLATION
+    what: char_count, words_count
+    
+    Example output:
+    - LIBRARY [OT] has [19792] sentences with mean char_count: [161], and std of [118.58]
+    - LIBRARY [NT] has [6412] sentences with mean char_count: [148], and std of [106.58]
+    - LIBRARY [NH] has [9374] sentences with mean char_count: [106], and std of [88.75]
+    - LIBRARY [Control] has [741] sentences with mean char_count: [108], and std of [131.65]
+    """
+
+    for a in df[who].unique():
+        adf = df.loc[df[who]==a]
+        print(f'- {who} [{a}] has [{len(adf)}] sentences with mean {what}: [{int(adf[what].mean())}], and std of [{round(adf[what].std(),2)}]')
+
+def return_dataset():
+    """Parses all the texts in the folders:
+    - data/Bible - King James
+    - data/Nag Hammadi
+    - data/Control texts
+
+    Returns df with columns:
+    'sentence' - every sentences text
+    'NUM' - id in the folder (ex book: 011)
+    'LIBRARY' - libraty in the folder (ex book: OT for Old Testament)
+    'AUTHOR' - the author of the book (ex book: Unknown)
+    'TEXT_NAME' - the book name (ex book: The Third Book of the Kings)
+    'TRANSLATION' - the name of the translation person or standard (ex book: King James)
+    'char_count' - how many characters in the sentence
+    'words_count' - how many words in the sentence (symbols like ? or ; count as a word here)
+    # ex book used: 011,OT,Unknown,The Third Book of the Kings,King James.txt
+    """
+    # - Get the df:
+    lines = []
+    numbers = []
+    libraryes = []
+    authors = []
+    text_names = []
+    translations = []
+    folders = ['data/Bible - King James', 'data/Nag Hammadi', 'data/Control texts']
+    for folder in folders:
+        for file in os.listdir(folder):
+            try:
+                # - Extract the text in lines:
+                folder_file = f"{folder}/{file}"
+                new_lines = parse_text(folder_file)
+                lines += new_lines
+                # - Make the LABELS for each line:
+                txt_labels = file.split(',')
+                txt_labels[-1] = txt_labels[-1].split('.')[0] #remove the .txt at the end of the file
+                for i in range(len(new_lines)):
+                    numbers.append(txt_labels[0])
+                    libraryes.append(txt_labels[1])
+                    authors.append(txt_labels[2])
+                    text_names.append(txt_labels[3])
+                    translations.append(txt_labels[4])
+            except Exception as e:
+                print(f'WARNING: Coudnlt parse {file} due to {e}')
+    df_dict = {
+        'sentence': lines,
+        'NUM': numbers,
+        'LIBRARY': libraryes,
+        'AUTHOR': authors,
+        'TEXT_NAME': text_names,
+        'TRANSLATION': translations
+    }
+    df = pd.DataFrame(df_dict)
+    df['char_count'] = df['sentence'].str.len()
+    df['words_count'] = df['sentence'].str.split().apply(len)
+    return df
 ###############################################
 # END MAIN FUNCTONS
 ###############################################
@@ -127,4 +195,7 @@ def get_words_dict(list_of_lines):
 
 
 if __name__ == '__main__':
-    pass
+    print('Doing "df = return_dataset()" to get the df...')
+    df = return_dataset()
+    print('Done! df returned!')
+    print(df.sample(5))
