@@ -1,6 +1,14 @@
 # Bible-vs-NagHammadi-match-score
 Is Nag Hammadi library part of the Bible? Use NLP techniques to get match score between the texts and try to answer that controversial question.
 
+## Description and goal:
+- **Bible**: The early Chirch arranged scripts, letters, ghospels and other texts related to Jesus Christ and created the Bible
+- **Gnostic**: Other texts were rejected as faked/heresy and were rejected. A lot of those texts were destroyed. They are also known as Gnostic texts
+- **Nag Hammadi**: In the 1945 a collection of early Christian and Gnostic texts were discovered near the Upper Egyptian town of Nag Hammadi
+- **Zero hypothesis (H0)**: Nag Hammadi/Gnostic texts and Bible texts are written by the same authors
+- **Goal**: use modern NLP methods to try and prove that H0 is wrong
+
+
 ## The dataset:
 - The raw texts are in data: the Bible (King James transl), Nag Hammadi librarie, Control texts that have nothing to do with Christianity
 - data_prep.py module contains the functions needed to parse and return the dataframe
