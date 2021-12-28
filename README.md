@@ -1,15 +1,15 @@
 # Bible vs Nag Hammadi match score
-Is Nag Hammadi library part of the Bible? Use modern NLP techniques to get a match score between the texts and try to answer that controversial question.
+Should the gnostic texts found near Nag Hammadi be a part of the Bible? Use modern NLP techniques try to answer that controversial question.
 
 <hr>
 <br>
 
 ## Description and goal:
 - <b style="font-size:120%">**[The Bible](https://en.wikipedia.org/wiki/Bible)**</b>: The early Church arranged scripts, letters, ghospels and other texts related to the teachings of Jesus Christ, and put together the Bible
-- <b style="font-size:120%">**[Gnostic texts](https://en.wikipedia.org/wiki/Gnostic_texts)**</b>: There were other texts that were rejected as herecy, claimed not to be Word of God. They are known as Gnostic texts. Most of those texts were lost or destroyed and only mentions or questionable copies of them survived
+- <b style="font-size:120%">**[Gnostic texts](https://en.wikipedia.org/wiki/Gnostic_texts)**</b>: There were other texts that were rejected as herecy, claimed not to be Word of God. They are known as Gnostic texts. Most of those texts were lost or destroyed and only mentions of them or questionable copies survived
 - <b style="font-size:120%">**[Nag Hammadi library](https://en.wikipedia.org/wiki/Nag_Hammadi_library)**</b>: That changed in the year of 1945, when a collection of early Christian and authentic Gnostic texts were discovered near the Upper Egyptian town of Nag Hammadi
 - <b style="font-size:120%">Zero hypothesis (H0)</b>: The Bible and the rejected Gnostic texts are part of the same teaching
-- <b style="font-size:120%">Goal</b>: Use NLP to define the bounds that separate the Bible from other texts that are clearly not part of it (Control texts). Then prove that H0 is wrong by observing whether the Gnostic texts fit inside or outside of that bound
+- <b style="font-size:120%">The Goal</b>: Use NLP to define the bounds that separate the Bible from other texts that are clearly not part of it (Control texts), then prove that H0 is wrong by observing whether the Gnostic texts fit inside or outside of those bounds
 
 <br>
 <hr>
@@ -17,10 +17,10 @@ Is Nag Hammadi library part of the Bible? Use modern NLP techniques to get a mat
 
 ## The dataset:
 - **The raw texts** are in [data](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/tree/main/data): 
-- - [The Bible](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/tree/main/data/Bible%20-%20King%20James) (King James transl) 
+- - [The Bible](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/tree/main/data/Bible%20-%20King%20James) (King James translation) 
 - - [Nag Hammadi gnostic texts](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/tree/main/data/Nag%20Hammadi)
-- - [Control texts](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/tree/main/data/Control%20texts) that have nothing to do with Christianity
-- **[data_prep.py](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/blob/main/data_prep.py)** module contains the functions needed to parse and return the dataframe
+- - [Control texts](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/tree/main/data/Control%20texts)
+- **[data_prep.py](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/blob/main/data_prep.py)** module contains the functions needed to parse and return a dataframe containing each sentence of the texts
 ```python
 >>> import data_prep as dp
 >>> df = dp.return_dataset()
