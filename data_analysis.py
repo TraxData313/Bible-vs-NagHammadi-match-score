@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import random
 import data_prep as dp
+import matplotlib.pyplot as plt
 
 
 def get_word_counts_and_freqs_df(parsed_book, words_dict):
@@ -95,6 +96,111 @@ def get_words_dict(list_of_lines):
                 index += 1
     return word_dict
 
+
+def freq_compare_with_Bible(df, who='TEXT_NAME', name='The Apocryphon of John', words_dict=None, count_words=False):
+    """Gets word frequency for the Bible (without the text, if the text is in the Bible),
+    Gets word freq for the text,
+    Returns log of the mean absolute word freq difference of the two texts
+    
+    if the word_dict is not passed it will be created (takes a few minutes, so better create it and pass it)
+    """
+    # - Word dict on all possible words:
+    if words_dict is None:
+        print('- Getting word dict...')
+        words_dict = get_words_dict(list(df['sentence']))
+    # - Bible df:
+    bdf_cond = (df['LIBRARY'].isin(['OT', 'NT']))&(df[who]!=name)
+    bdf = df.loc[bdf_cond]
+    # - Text df:
+    tdf = df.loc[df[who]==name]
+    # - Freq comparison:
+    #print(f'- Calculating log mean abs freq diff for [{name}]...')
+    freq_diff = get_mean_freq_diff(list(bdf['sentence']), list(tdf['sentence']), words_dict)
+    freq_diff = np.log(freq_diff)
+    if count_words:
+        word_count_diff = tdf.words_count.mean() - bdf.words_count.mean()
+        return freq_diff, word_count_diff
+    else:
+        return freq_diff
+    
+def freq_compare_with_Bible_loop(df, words_dict, texts='all'):
+    #texts: all, Bible/Control
+    if texts == 'all':
+        # - All texts:
+        print('Comparing all texts...')
+        texts = list(df.loc[df['LIBRARY'].isin(['OT','NT','NH','Control'])]['TEXT_NAME'].unique())
+    else:
+        # - Bible vs control:
+        print('Comparing Bible (OT,NT) with Control texts only (no NH)...')
+        texts = list(df.loc[df['LIBRARY'].isin(['OT','NT','Control'])]['TEXT_NAME'].unique())
+    results = {}
+    LIBRARYs = []
+    AUTHORs = []
+    TRANSLATIONs = []
+    AUTHOR_LIBRARYs = []
+    word_count_diffs = []
+    for text in texts:
+        LIBRARYs.append(df.loc[df['TEXT_NAME']==text]['LIBRARY'].unique()[0])
+        AUTHORs.append(df.loc[df['TEXT_NAME']==text]['AUTHOR'].unique()[0])
+        TRANSLATIONs.append(df.loc[df['TEXT_NAME']==text]['TRANSLATION'].unique()[0])
+        AUTHOR_LIBRARYs.append(df.loc[df['TEXT_NAME']==text]['AUTHOR_LIBRARY'].unique()[0])
+        freq_diff, word_count_diff = freq_compare_with_Bible(df, who='TEXT_NAME', name=text, words_dict=words_dict, count_words=True)
+        results[text] = freq_diff
+        word_count_diffs.append(word_count_diff)
+    results = pd.DataFrame({
+        'TEXT': results.keys(), 
+        'LIBRARY': LIBRARYs,
+        'AUTHOR': AUTHORs,
+        'TRANSLATION': TRANSLATIONs,
+        'AUTHOR_LIBRARY': AUTHOR_LIBRARYs,
+        'LMAWFD': results.values(),
+        'AWCD': word_count_diffs
+    })
+    results.sort_values('LMAWFD', ascending=False).reset_index(drop=True)
+    print('- Done!')
+    return results
+    
+def get_plt_colors(whos):
+    colors = []
+    color_dict = {'OT': 'blue', 'NT': 'dodgerblue', 'Control': 'green', 'NH': 'purple'}
+    for who in whos:
+        who = who.split('_')[-1]
+        colors.append(color_dict[who])
+    return colors
+    
+def word_freq_and_count_plot(results, who='AUTHOR_LIBRARY'):
+    # - Data:
+    results_agr = results.groupby(who).agg({'LMAWFD': 'mean', 'AWCD': 'mean'}).reset_index().sort_values('LMAWFD', ascending=False).reset_index(drop=True)
+    X = results_agr['LMAWFD']
+    Y = results_agr['AWCD']
+    whos = results_agr[who]
+    
+    # - Plot the data:
+    colors = get_plt_colors(whos)
+    fig = plt.figure(figsize=(20,10))
+    plt.scatter(X, Y, c=colors, marker='o', s=200)
+    for i, txt in enumerate(whos):
+        plt.annotate(txt, (X[i], Y[i]), 
+                     verticalalignment='bottom', 
+                     fontsize={'AUTHOR_LIBRARY': 10, 'LIBRARY': 15}[who], 
+                     horizontalalignment='left', 
+                     rotation=10)
+        
+    # - Plot Labels and Title:
+    font1 = {'family':'serif','color':'black','size':25}
+    font2 = {'family':'serif','color':'darkred','size':25}
+    plt.title(f"Word Freq and Count diff for every {who}", fontdict = font1, 
+              loc = 'left' # def=center
+             )
+    plt.xlabel(f"Log of Mean Abs sentence Word Freq Diff*", fontdict = font2)
+    plt.ylabel(f"Mean sentence words count more by*", fontdict = font2)
+        
+    plt.show()
+    print(f'*between the [{who}] and the Bible (or with the rest of the Bible excluding the text, if the text is part of the Bible itself)')
+    print('- Dark Blue: The Bible - Old Testament')
+    print('- Light Blue: The Bible - New Testament')
+    print('- Purple: Nag Hammadi')
+    print('- Green: Control group')
 
 if __name__ == '__main__':
     Apocryphon = 'temp_data/The Apocryphon of John.txt'

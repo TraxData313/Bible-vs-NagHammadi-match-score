@@ -146,6 +146,7 @@ def return_dataset():
     'AUTHOR' - the author of the book (ex book: Unknown)
     'TEXT_NAME' - the book name (ex book: The Third Book of the Kings)
     'TRANSLATION' - the name of the translation person or standard (ex book: King James)
+    'AUTHOR_LIBRARY' - the AUTHOR followed the by LIBRARY - usefull in many cases to haveit like that
     'char_count' - how many characters in the sentence
     'words_count' - how many words in the sentence (symbols like ? or ; count as a word here)
     # ex book used: 011,OT,Unknown,The Third Book of the Kings,King James.txt
@@ -185,6 +186,7 @@ def return_dataset():
         'TRANSLATION': translations
     }
     df = pd.DataFrame(df_dict)
+    df['AUTHOR_LIBRARY'] = df['AUTHOR'] + '_' + df['LIBRARY']
     df['char_count'] = df['sentence'].str.len()
     df['words_count'] = df['sentence'].str.split().apply(len)
     return df
