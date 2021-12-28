@@ -29,6 +29,7 @@ Should the gnostic texts found near Nag Hammadi be a part of the Bible? Use mode
 >>> df.sample(1).sentence
 #OUTPUT: 17050    now the lord hath brought it , and done accord..
 ```
+![image](https://user-images.githubusercontent.com/45358654/147574232-c901de0b-ae3a-4e24-b7eb-bc6739af24b1.png)
 - **[001_dataset_preview.ipynb](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/blob/main/001_dataset_preview.ipynb)** contains usage example of data_prep functions return_dataset() and print_dataset_stats() functions
 
 
