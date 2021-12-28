@@ -153,10 +153,10 @@ def freq_compare_with_Bible_loop(df, words_dict, texts='all'):
         'AUTHOR': AUTHORs,
         'TRANSLATION': TRANSLATIONs,
         'AUTHOR_LIBRARY': AUTHOR_LIBRARYs,
-        'LMAWFD': results.values(),
-        'AWCD': word_count_diffs
+        'freq_diff': results.values(),
+        'word_diff': word_count_diffs
     })
-    results.sort_values('LMAWFD', ascending=False).reset_index(drop=True)
+    results.sort_values('freq_diff', ascending=False).reset_index(drop=True)
     print('- Done!')
     return results
     
@@ -170,9 +170,9 @@ def get_plt_colors(whos):
     
 def word_freq_and_count_plot(results, who='AUTHOR_LIBRARY'):
     # - Data:
-    results_agr = results.groupby(who).agg({'LMAWFD': 'mean', 'AWCD': 'mean'}).reset_index().sort_values('LMAWFD', ascending=False).reset_index(drop=True)
-    X = results_agr['LMAWFD']
-    Y = results_agr['AWCD']
+    results_agr = results.groupby(who).agg({'freq_diff': 'mean', 'word_diff': 'mean'}).reset_index().sort_values('freq_diff', ascending=False).reset_index(drop=True)
+    X = results_agr['freq_diff']
+    Y = results_agr['word_diff']
     whos = results_agr[who]
     
     # - Plot the data:
@@ -202,6 +202,47 @@ def word_freq_and_count_plot(results, who='AUTHOR_LIBRARY'):
     print('- Purple: Nag Hammadi')
     print('- Green: Control group')
 
+def perm_test(full_sim_sample, real_sample, P=100000, rounder_dgts=7):
+    """Sample output:
+    Doing permutation test for real sample of lenght [6] and [10000] permutations...
+    - real_mean_dif: 0.5038873
+    - sims_mean_dif (ave): 0.0008777
+    - P-value based on mean   difs: [0.08%]
+
+    Normal hypothesis confirm:
+    - P-value based on mean is smaller than (0.05)**[6] as % or [5.0%], aka Zero-Hypothesis may be True: [False]
+    """
+    full_sim_sample = list(full_sim_sample)
+    real_sample = list(real_sample)
+    sampl_size = len(real_sample)
+    print(f'Doing permutation test for real sample of lenght [{sampl_size}] and [{P}] permutations...')
+    sim_sample = random.sample(full_sim_sample, sampl_size)
+    full_list = real_sample+sim_sample
+    # Real mean_dif:
+    real_mean_dif = abs(np.mean(real_sample) - np.mean(sim_sample))
+    print('- real_mean_dif:', round(real_mean_dif,7))
+    # P permutation tests:
+    bigger_mean_dif = 0
+    sim_mean_difs = []
+    for i in range(P):
+        random.shuffle(full_list)
+        # - Mean test:
+        perm_mean_dif = abs(np.mean(full_list[:sampl_size]) - np.mean(full_list[sampl_size:]))
+        sim_mean_difs.append(perm_mean_dif)
+        if perm_mean_dif >= real_mean_dif:
+            bigger_mean_dif+=1
+    print('- sims_mean_dif (ave):', round(np.mean(sim_mean_difs),rounder_dgts))
+    # Evaluate the p-value:
+    p_value_on_means_perc = bigger_mean_dif*100/P
+    print(f'- P-value based on mean |difs: [{p_value_on_means_perc}%]')
+    # - Hypothesis confirm:
+    print()
+    print('Normal hypothesis confirm:')
+    lowest_p_value_perc = (0.05)*100
+    p_value_on_means_confirmed = p_value_on_means_perc > lowest_p_value_perc
+    print(f'- P-value based on mean is smaller than [{lowest_p_value_perc}%], aka Zero-Hypothesis may be True: [{p_value_on_means_confirmed}]')
+    return p_value_on_means_perc
+    
 if __name__ == '__main__':
     Apocryphon = 'temp_data/The Apocryphon of John.txt'
     Revelation = 'temp_data/The Revelation of Saint John the Divine.txt'
