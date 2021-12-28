@@ -51,7 +51,7 @@ Get a list of every word used by both authors, rate the frequency of usage of ev
 - **Rate the Nag Hammadi texts authors**: compare the Nag Hammadi authors and check whether they are within or out of the acceptable deviations
 
 ###  The results:
-- **Plot**: Once we perform the experiments and rate every author's Word Freq Diff and Word Count Diff, we can plot the results on the X and Y axis and observe whether there is a visible separation
-- **P-value by perm test**: we can estimate the P-value of H0 related to each separate metric and prove whether H0 is wrong
+- **Plot**: Once we perform the experiments and rate every author's Word Freq Diff and Word Count Diff, we can plot the results on the X and Y axis and observe that there is a visible separation
+- **P-value by perm test**: we can estimate the P-value of H0 related to each separate metric and prove that H0 is wrong
 
 ![image](https://user-images.githubusercontent.com/45358654/147566664-2798b083-9a16-4fd4-aef7-a76d6007be45.png)
