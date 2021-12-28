@@ -27,3 +27,26 @@ Is Nag Hammadi library part of the Bible? Use NLP techniques to get match score 
 #OUTPUT: 17050    now the lord hath brought it , and done accord..
 ```
 - **[001_dataset_preview.ipynb](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/blob/main/001_dataset_preview.ipynb)** contains usage example of data_prep functions return_dataset() and print_dataset_stats() functions
+
+
+<br>
+
+## Word frequency and sentence word lenght comparison:
+The metrics:
+- **Word Count Diff**: The author uses Long or Short sentences?
+Measure how much words an average sentence of the authors has, and look at word count difference between the two authors (for example, author A uses 60 words in a sencence on average, while author B uses only 15 - author B uses significantly shorter sencences than author A)
+- **Word Freq Diff**: What words the author uses?
+Get a list of every word used by both authors, rate the frequency of usage of every word by both authors and take the average of the differences between every word (for example, author A uses the word "love" frequently, while author B doesn't, but uses the word "pain" very much, while author A doesn't)
+
+The experiment:
+- **Rate the Bible authors**: for every author in the Bible, compare his style with the style of the rest of the Bible. This way we will get the bounds of acceptable deviations
+- **Rate the Control authors**: now compare the styles of the two Control authors, which have nothing to do with Christianity, and compare them with the Bible. Make sure they are out of the acceptable deviations
+- **Rate the Nag Hammadi texts authors**: compare the Nag Hammadi authors and check whether they are within or out of the acceptable deviations
+
+The results:
+- **Plot**: Once we perform the experiments and rate every author's Word Freq Diff and Word Count Diff, we can plot the results on the X and Y axis and observe whether there is a visible separation
+- **P-value by perm test**: we can estimate the P-value of H0 related to each separate metric and prove whether H0 is wrong
+
+Notebook:
+- **[001_dataset_preview.ipynb002_word_freq_and_count_comparisons.ipynb](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/blob/main/002_word_freq_and_count_comparisons.ipynb)** contains all the above steps done and a prove by Word Cound and by Word Freq Diff that H0 is wrong
+
