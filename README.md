@@ -47,6 +47,8 @@ The results:
 - **Plot**: Once we perform the experiments and rate every author's Word Freq Diff and Word Count Diff, we can plot the results on the X and Y axis and observe whether there is a visible separation
 - **P-value by perm test**: we can estimate the P-value of H0 related to each separate metric and prove whether H0 is wrong
 
+![image](https://user-images.githubusercontent.com/45358654/147566417-84d48562-327c-47a4-b252-920bcef78df3.png)
+
 Notebook:
 - **[001_dataset_preview.ipynb002_word_freq_and_count_comparisons.ipynb](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/blob/main/002_word_freq_and_count_comparisons.ipynb)** contains all the above steps done and a prove by Word Cound and by Word Freq Diff that H0 is wrong
 
