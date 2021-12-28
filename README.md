@@ -37,7 +37,7 @@ Is Nag Hammadi library part of the Bible? Use NLP techniques to get match score 
 <br>
 
 ## Word frequency and sentence word lenght comparison:
-Notebook: **[001_dataset_preview.ipynb002_word_freq_and_count_comparisons.ipynb](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/blob/main/002_word_freq_and_count_comparisons.ipynb)** contains all the above steps done and a prove by Word Cound and by Word Freq Diff that H0 is wrong
+Notebook: **[001_dataset_preview.ipynb002_word_freq_and_count_comparisons.ipynb](https://github.com/TraxData313/Bible-vs-NagHammadi-match-score/blob/main/002_word_freq_and_count_comparisons.ipynb)**
 
 ### The metrics:
 - **Word Count Diff**: The author uses Long or Short sentences?
